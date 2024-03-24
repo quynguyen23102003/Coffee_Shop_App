@@ -30,7 +30,7 @@ const getCoffeeList = (category: string, data: any) => {
   }
 };
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: any) => {
   const CoffeeList = useStore((state: any) => state.CoffeeList);
   const BeanList = useStore((state: any) => state.BeanList);
   const [categories, setCategories] = useState(getCategoriesFromData(CoffeeList));
@@ -97,7 +97,10 @@ const HomeScreen = () => {
           <TextInput
             placeholder='Find Your Coffee...'
             value={searchText}
-            onChangeText={text => setSearchText(text)}
+            onChangeText={text => {
+              setSearchText(text)
+              searchCoffee(text);
+            }}
             placeholderTextColor={COLORS.primaryLightGreyHex}
             style={styles.textInput}
           />
@@ -156,7 +159,13 @@ const HomeScreen = () => {
           contentContainerStyle={styles.FlatlistContainer}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onPress={() => { }}>
+              <TouchableOpacity onPress={() => {
+                navigation.push('Details', {
+                  index: item.index,
+                  id: item.id,
+                  type: item.type,
+                });
+              }}>
                 <CoffeeCard
                   id={item.id}
                   index={item.index}
@@ -167,7 +176,7 @@ const HomeScreen = () => {
                   special_ingredient={item.special_ingredient}
                   average_rating={item.average_rating}
                   price={item.prices[2].price}
-                  buttonPressHandler={() => { }}
+                  buttonPressHandler={() => {}}
                 />
               </TouchableOpacity>
             )
@@ -185,7 +194,13 @@ const HomeScreen = () => {
           contentContainerStyle={[styles.FlatlistContainer, { marginBottom: tabBerHeight }]}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onPress={() => { }}>
+              <TouchableOpacity onPress={() => {
+                navigation.push('Details', {
+                  index: item.index,
+                  id: item.id,
+                  type: item.type
+                });
+              }}>
                 <CoffeeCard
                   id={item.id}
                   index={item.index}
